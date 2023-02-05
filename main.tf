@@ -1,7 +1,6 @@
 # AWS Provider Block
 provider "aws" {
   region = var.aws_region
-  profile = "default"
 }
 
 resource "aws_vpc" "main" {
