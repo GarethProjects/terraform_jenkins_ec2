@@ -5,8 +5,6 @@ pipeline {
         string(name: 'WORKSPACE', defaultValue: 'development', description:'setting up workspace for terraform')
     }
     environment {
-        TF_HOME = tool('terraform')
-        TP_LOG = "WARN"
         PATH = "$TF_HOME:$PATH"
         THE_BUTLER_SAYS_SO=credentials('demo-aws')
     
@@ -47,7 +45,7 @@ pipeline {
                         } catch (err) {
                             sh "terraform workspace select ${params.WORKSPACE}"
                         }
-                        sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
+                        sh "terraform plan -var ' THE_BUTLER_SAYS_SO=credentials('demo-aws')' \
                         -out terraform.tfplan;echo \$? > status"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
                     }
