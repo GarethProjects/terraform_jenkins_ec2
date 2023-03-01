@@ -1,78 +1,54 @@
 pipeline {
     agent any
-    
-    parameters {
-        string(name: 'WORKSPACE', defaultValue: 'development', description:'setting up workspace for terraform')
-    }
+
     environment {
         PATH = "$TF_HOME:$PATH"
         ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
         SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     
-    }
     stages {
-            stage('TerraformInit'){
+        stage ("Creds") {
             steps {
-                dir(''){
-                    sh "terraform init -input=false"
-                    sh "echo \$PWD"
-                    sh "whoami"
-                }
+                sh '''
+          aws --version
+          aws ec2 describe-instances
+        '''
             }
         }
-
-        stage('TerraformFormat'){
+        stage ("terraform init") {
             steps {
-                dir(''){
-                    sh "terraform fmt -list=true -write=false -diff=true -check=true"
-                }
+                sh ("terraform init -reconfigure") 
             }
         }
-
-        stage('TerraformValidate'){
+        stage ("Terraform Format") {
             steps {
-                dir(''){
-                    sh "terraform validate"
-                }
+                sh ('terraform fmt')
             }
         }
-
-        stage('TerraformPlan'){
+       stage ("terraform validate script") {
             steps {
-                dir(''){
-                    script {
-                        try {
-                            sh "terraform workspace new ${params.WORKSPACE}"
-                        } catch (err) {
-                            sh "terraform workspace select ${params.WORKSPACE}"
-                        }
-                        sh "terraform plan -var ' THE_BUTLER_SAYS_SO=credentials('demo-aws')' \
-                        -out terraform.tfplan;echo \$? > status"
-                        stash name: "terraform-plan", includes: "terraform.tfplan"
-                    }
-                }
+                sh ('terraform validate') 
             }
         }
-        
-        stage('TerraformApply'){
+        stage ("plan") {
             steps {
-                script{
-                    def apply = false
-                    try {
-                        input message: 'Can you please confirm the apply', ok: 'Ready to Apply the Config'
-                        apply = true
-                    } catch (err) {
-                        apply = false
-                         currentBuild.result = 'UNSTABLE'
-                    }
-                    if(apply){
-                        dir(''){
-                            unstash "terraform-plan"
-                            sh 'terraform apply terraform.tfplan' 
-                        }
-                    }
-                }
+                sh ('terraform plan -out myplan')
             }
+        }
+        stage ("Validate apply") {
+            input {
+                message "Are you sure you want to apply this plan?"
+                ok "Apply this plan."
+            }
+            steps{
+                echo "Apply command has been accepted"
+            }
+        }
+        stage (" Action") {
+            steps {
+                echo "Terraform action is --> ${action}"
+                sh ('terraform ${action} --auto-approve')
+           }
         }
     }
 }
