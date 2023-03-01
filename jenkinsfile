@@ -6,7 +6,8 @@ pipeline {
     }
     environment {
         PATH = "$TF_HOME:$PATH"
-        THE_BUTLER_SAYS_SO=credentials('demo-aws')
+        ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
+        SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     
     }
     stages {
