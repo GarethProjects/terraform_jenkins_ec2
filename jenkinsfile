@@ -6,19 +6,12 @@ pipeline {
         SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
-        stage ("Creds") {
-            steps {
-                sh '''
-          aws --version
-          aws ec2 describe-instances
-        '''
-            }
-        }
         stage ("terraform init") {
             steps {
                 sh ("terraform init -reconfigure") 
             }
-        }
+          }       
+       }
         stage ("Terraform Format") {
             steps {
                 sh ('terraform fmt')
