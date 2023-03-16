@@ -2,22 +2,28 @@ pipeline {
     agent any
     environment {
         AWS_DEFAULT_REGION="us-east-2"
-        ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
-        SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        THE_BUTLER_SAYS_SO=credentials('demo-aws')
     }
     stages {
+        stage ("Creds") {
+            steps {
+                sh '''
+          aws --version
+          aws ec2 describe-instances
+        '''
+            }
+        }
         stage ("terraform init") {
             steps {
                 sh ("terraform init -reconfigure") 
             }
-          }       
-       }
+        }
         stage ("Terraform Format") {
             steps {
                 sh ('terraform fmt')
             }
         }
-        stage ("terraform validate script") {
+       stage ("terraform validate script") {
             steps {
                 sh ('terraform validate') 
             }
@@ -43,3 +49,4 @@ pipeline {
            }
         }
     }
+}
