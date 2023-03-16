@@ -17,7 +17,7 @@ pipeline {
                 sh ('terraform fmt')
             }
         }
-       stage ("terraform validate script") {
+        stage ("terraform validate script") {
             steps {
                 sh ('terraform validate') 
             }
