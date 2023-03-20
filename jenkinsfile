@@ -4,6 +4,7 @@ pipeline {
     
     parameters {
         string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
+        file(name: 'tfvars', description: 'prod.tfvars file', optional: true)
     }
     
      environment {
@@ -51,7 +52,7 @@ pipeline {
         stage (" Action") {
             steps {
                 echo "Terraform action is --> ${action}"
-                sh ('terraform ${action} --auto-approve -var-file="prod.tfvars"')
+                sh ('terraform ${action} --auto-approve -var-file="${params.tfvars}"')
            }
         }
     }
