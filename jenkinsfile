@@ -2,10 +2,7 @@
 pipeline {
     agent any
     
-    
-    parameters {
-        file(name: 'tfvars', description: 'prod.tfvars file')
-    }
+
     
      environment {
       AWS_DEFAULT_REGION="us-east-1"
