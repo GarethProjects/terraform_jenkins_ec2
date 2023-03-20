@@ -1,2 +1,2 @@
-ec2_instance_count = 5
+ec2_instance_count=5
 
