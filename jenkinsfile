@@ -2,8 +2,8 @@ pipeline {
     agent any
     environment {
         AWS_DEFAULT_REGION="us-west-2"
-        AWS_ACCESS_KEY_ID='AWS_ACCESS_KEY_ID'
-        AWS_SECRET_ACCESS_KEY='AWS_SECRET_ACCESS_KEY'
+        AWS_ACCESS_KEY_ID='AKIASKVRIQZWRWEEFFU3'
+        AWS_SECRET_ACCESS_KEY='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'
     }
     stages {
         stage ("Creds") {
