@@ -2,10 +2,6 @@
 pipeline {
     agent any
     
-    parameters {
-        string(name: 'tfvars', description: 'prod.tfvars file')
-    }
-    
      environment {
       AWS_DEFAULT_REGION="us-east-1"
       THE_BUTLER_SAYS_SO=credentials('aws-creds')
@@ -51,7 +47,7 @@ pipeline {
         stage (" Action") {
             steps {
                 echo "Terraform action is --> ${action}"
-                sh "terraform ${action} --auto-approve -var-file=${params.tfvars}"
+                sh "terraform ${action} --auto-approve -var-file=prod.tfvars}"
            }
         }
     }
