@@ -28,6 +28,13 @@ pipeline {
                 sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
+        
+        stage ("Create Terraform Workspace") {
+            steps {
+                sh ('terraform workspace new prod')
+                sh ('terraform workspace select prod')
+              }
+            }
 
         stage('Approval') {
             when {
@@ -44,6 +51,7 @@ pipeline {
                 }
             }
         }
+        
 
         stage('Apply') {
             steps {
