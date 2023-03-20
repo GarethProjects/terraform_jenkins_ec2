@@ -7,8 +7,8 @@ pipeline {
     }
     
      environment {
-        AWS_DEFAULT_REGION="us-east-2"
-        THE_BUTLER_SAYS_SO=credentials('demo-aws')
+      AWS_DEFAULT_REGION="us-east-1"
+      THE_BUTLER_SAYS_SO=credentials('aws-creds')
     }
     stages {
         stage ("Creds") {
