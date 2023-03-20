@@ -11,6 +11,3 @@ variable "ec2_instance_count" {
   default     = 2
 } 
 
-variable "version" {
-  type = string
-}
