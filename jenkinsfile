@@ -3,8 +3,7 @@ pipeline {
     agent any
     
     parameters {
-        string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
-        file(name: 'tfvars', description: 'prod.tfvars file')
+        string(name: 'tfvars', description: 'prod.tfvars file')
     }
     
      environment {
